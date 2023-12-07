@@ -1,0 +1,51 @@
+pclass,survived,name,sex,age,sibsp,parch,ticket,fare,cabin,embarked,boat,body,home.dest
+3.0,1,"Masselmani, Mrs. Fatima",female,,0.0,0.0,2649,7.225,,C,C,,
+3.0,0,"Meanwell, Miss. (Marion Ogden)",female,,0.0,0.0,SOTON/O.Q. 392087,8.05,,S,,,
+2.0,0,"Gale, Mr. Shadrach",male,34.0,1.0,0.0,28664,21.0,,S,,,"Cornwall / Clear Creek, CO"
+2.0,0,"Pengelly, Mr. Frederick William",male,19.0,0.0,0.0,28665,10.5,,S,,,"Gunnislake, England / Butte, MT"
+3.0,1,"McCoy, Mr. Bernard",male,,2.0,0.0,367226,23.25,,Q,16,,
+3.0,1,"Salkjelsvik, Miss. Anna Kristine",female,21.0,0.0,0.0,343120,7.65,,S,C,,
+1.0,1,"Goldenberg, Mr. Samuel L",male,49.0,1.0,0.0,17453,89.1042,C92,C,5,,"Paris, France / New York, NY"
+3.0,0,"van Billiard, Mr. Austin Blyler",male,40.5,0.0,2.0,A/5. 851,14.5,,S,,255.0,
+3.0,0,"Guest, Mr. Robert",male,,0.0,0.0,376563,8.05,,S,,,
+1.0,1,"Calderhead, Mr. Edward Pennington",male,42.0,0.0,0.0,PC 17476,26.2875,E24,S,5,,"New York, NY"
+3.0,0,"Franklin, Mr. Charles (Charles Fardon)",male,,0.0,0.0,SOTON/O.Q. 3101314,7.25,,S,,,
+1.0,1,"Ward, Miss. Anna",female,35.0,0.0,0.0,PC 17755,512.3292,,C,3,,
+2.0,0,"Giles, Mr. Ralph",male,24.0,0.0,0.0,248726,13.5,,S,,297.0,"West Kensington, London"
+3.0,0,"Mineff, Mr. Ivan",male,24.0,0.0,0.0,349233,7.8958,,S,,,
+1.0,0,"Hilliard, Mr. Herbert Henry",male,,0.0,0.0,17463,51.8625,E46,S,,,"Brighton, MA"
+1.0,0,"Penasco y Castellana, Mr. Victor de Satode",male,18.0,1.0,0.0,PC 17758,108.9,C65,C,,,"Madrid, Spain"
+3.0,0,"Niklasson, Mr. Samuel",male,28.0,0.0,0.0,363611,8.05,,S,,,
+3.0,0,"Nenkoff, Mr. Christo",male,,0.0,0.0,349234,7.8958,,S,,,
+2.0,1,"Davies, Master. John Morgan Jr",male,8.0,1.0,1.0,C.A. 33112,36.75,,S,14,,"St Ives, Cornwall / Hancock, MI"
+2.0,0,"Giles, Mr. Frederick Edward",male,21.0,1.0,0.0,28134,11.5,,S,,,"Cornwall / Camden, NJ"
+3.0,0,"Peters, Miss. Katie",female,,0.0,0.0,330935,8.1375,,Q,,,
+1.0,1,"Kimball, Mrs. Edwin Nelson Jr (Gertrude Parsons)",female,45.0,1.0,0.0,11753,52.5542,D19,S,5,,"Boston, MA"
+3.0,0,"Smith, Mr. Thomas",male,,0.0,0.0,384461,7.75,,Q,,,
+3.0,1,"Osman, Mrs. Mara",female,31.0,0.0,0.0,349244,8.6833,,S,,,
+2.0,0,"Gilbert, Mr. William",male,47.0,0.0,0.0,C.A. 30769,10.5,,S,,,Cornwall
+3.0,0,"Lindell, Mrs. Edvard Bengtsson (Elin Gerda Persson)",female,30.0,1.0,0.0,349910,15.55,,S,A,,
+1.0,0,"Roebling, Mr. Washington Augustus II",male,31.0,0.0,0.0,PC 17590,50.4958,A24,S,,,"Trenton, NJ"
+3.0,0,"Sage, Master. Thomas Henry",male,,8.0,2.0,CA. 2343,69.55,,S,,,
+3.0,0,"Berglund, Mr. Karl Ivar Sven",male,22.0,0.0,0.0,PP 4348,9.35,,S,,,"Tranvik, Finland New York"
+3.0,1,"Foo, Mr. Choong",male,,0.0,0.0,1601,56.4958,,S,13,,"Hong Kong New York, NY"
+2.0,1,"Bystrom, Mrs. (Karolina)",female,42.0,0.0,0.0,236852,13.0,,S,,,"New York, NY"
+3.0,1,"Kink-Heilmann, Mr. Anton",male,29.0,3.0,1.0,315153,22.025,,S,2,,
+3.0,0,"Peduzzi, Mr. Joseph",male,,0.0,0.0,A/5 2817,8.05,,S,,,
+3.0,0,"Petroff, Mr. Pastcho ('Pentcho')",male,,0.0,0.0,349215,7.8958,,S,,,
+3.0,0,"Cann, Mr. Ernest Charles",male,21.0,0.0,0.0,A./5. 2152,8.05,,S,,,
+3.0,0,"O'Connor, Mr. Patrick",male,,0.0,0.0,366713,7.75,,Q,,,
+3.0,0,"Stankovic, Mr. Ivan",male,33.0,0.0,0.0,349239,8.6625,,C,,,
+3.0,1,"Murphy, Miss. Nora",female,,0.0,0.0,36568,15.5,,Q,16,,
+2.0,1,"Bentham, Miss. Lilian W",female,19.0,0.0,0.0,28404,13.0,,S,12,,"Rochester, NY"
+2.0,0,"Davies, Mr. Charles Henry",male,18.0,0.0,0.0,S.O.C. 14879,73.5,,S,,,"Lyndhurst, England"
+3.0,0,"Riihivouri, Miss. Susanna Juhantytar 'Sanni'",female,22.0,0.0,0.0,3101295,39.6875,,S,,,
+2.0,0,"McCrae, Mr. Arthur Gordon",male,32.0,0.0,0.0,237216,13.5,,S,,209.0,"Sydney, Australia"
+1.0,0,"Isham, Miss. Ann Elizabeth",female,50.0,0.0,0.0,PC 17595,28.7125,C49,C,,,"Paris, France New York, NY"
+2.0,1,"Buss, Miss. Kate",female,36.0,0.0,0.0,27849,13.0,,S,9,,"Sittingbourne, England / San Diego, CA"
+1.0,1,"Cornell, Mrs. Robert Clifford (Malvina Helen Lamson)",female,55.0,2.0,0.0,11770,25.7,C101,S,2,,"New York, NY"
+3.0,0,"Brocklebank, Mr. William Alfred",male,35.0,0.0,0.0,364512,8.05,,S,,,"Broomfield, Chelmsford, England"
+3.0,0,"Svensson, Mr. Olof",male,24.0,0.0,0.0,350035,7.7958,,S,,,
+3.0,1,"O'Dwyer, Miss. Ellen 'Nellie'",female,,0.0,0.0,330959,7.8792,,Q,,,
+3.0,0,"Mahon, Mr. John",male,,0.0,0.0,AQ/4 3130,7.75,,Q,,,
+3.0,1,"Johansson Palmquist, Mr. Oskar Leander",male,26.0,0.0,0.0,347070,7.775,,S,15,,

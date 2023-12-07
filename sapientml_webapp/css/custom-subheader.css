@@ -1,0 +1,48 @@
+
+.custom-subheader {
+  background-color: navy;
+  color: white;
+  padding: 10px;
+}
+
+.custom-subheader h2 {
+  font-size: 15px;
+}
+
+.custom-subheader-left {
+    position: relative;
+    padding-left: 15px;
+}
+
+.custom-subheader-left::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    background-color: navy;
+}
+
+.custom-subheader-left h2 {
+    font-size: 20px;
+}
+
+.custom-subheader-left h3 {
+  font-size: 15px;
+}
+
+
+.button-link {
+  display: inline-block;
+  padding: 5px 10px;
+  color: green;
+  text-decoration: none;
+  border: 1px solid lightgray;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.button-link:hover {
+  background-color: lightgrey;
+}
