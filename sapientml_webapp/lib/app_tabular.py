@@ -367,7 +367,8 @@ class TabularApplication(Application):
         state = st.session_state.conf
         previous_state = st.session_state.previous_conf
         # Configuration
-        st.subheader("", anchor="set_param")
+        st.markdown("<a name='set_param'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.configuration"))
         st.sidebar.markdown(f"[{t('header.configuration')}](#set_param)")
 
@@ -460,7 +461,8 @@ class TabularApplication(Application):
         (lang, is_tutorial) = self.get_query_params()
         t = use_translation(lang, self.I18N_DICT)
 
-        st.subheader("", anchor="prediction_result")
+        st.markdown("<a name='prediction_result'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.prediction_result"))
         st.sidebar.markdown(f"[{t('header.prediction_result')}](#prediction_result)")
 
