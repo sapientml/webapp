@@ -24,7 +24,7 @@ RUN /venv/bin/pip install -U pip setuptools
 RUN /venv/bin/pip install poetry
 COPY pyproject.toml poetry.lock /
 RUN /venv/bin/poetry install --no-root --without=dev
-RUN wget -P /venv/lib/python3.11/site-packages/sapientml_preprocess/lib https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+RUN wget -P /venv/lib/python3.11/site-packages/sapientml_core/preprocess/default/lib https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
 RUN mkdir /app
 COPY sapientml_webapp /app/
 
