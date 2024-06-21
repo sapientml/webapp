@@ -76,13 +76,13 @@ class Application(ABC):
                 del st.session_state[key]
 
     def get_lang(self):
-        query_params = st.query_params()
+        query_params = st.query_params
         selected_lang = query_params["lang"][0] if "lang" in query_params else "en"
         lang = "ja" if selected_lang == "ja" else "en"
         return lang
 
     def get_tutorial_mode(self):
-        query_params = st.query_params()
+        query_params = st.query_params
 
         # for webapp
         if "is_tutorial" in query_params:
