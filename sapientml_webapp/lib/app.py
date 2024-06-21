@@ -286,7 +286,8 @@ class Application(ABC):
         (lang, is_tutorial) = self.get_query_params()
         t = use_translation(lang, self.I18N_DICT)
 
-        st.subheader("", anchor="train_data")
+        st.markdown("<a name='train_data'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.training_data"))
         st.sidebar.markdown(f"[{t('header.training_data')}](#train_data)")
 
@@ -351,7 +352,8 @@ class Application(ABC):
             st.stop()
 
         # Execution
-        st.subheader("", anchor="execution")
+        st.markdown("<a name='execution'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.execution"))
         st.sidebar.markdown(f"[{t('header.execution')}](#execution)")
 
@@ -439,9 +441,10 @@ class Application(ABC):
         t = use_translation(lang, self.I18N_DICT)
 
         # Result
-        st.subheader("", anchor="result")
+        st.markdown("<a name='automl_result'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.result"))
-        st.sidebar.markdown(f"[{t('header.result')}](#result)")
+        st.sidebar.markdown(f"[{t('header.result')}](#automl_result)")
         st.write(t("experimental_result.description"))
 
         if tutorial_disabled:
@@ -525,8 +528,9 @@ class Application(ABC):
             else None
         )
 
-        # モデル詳細
-        st.subheader("", anchor="model_detail")
+        # Model Detail
+        st.markdown("<a name='model_detail'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.model_details"))
         st.sidebar.markdown(f"[{t('header.model_details')}](#model_detail)")
 
@@ -568,7 +572,8 @@ class Application(ABC):
         calculate_PI = True if "permutation_importance.csv" in files.keys() else False
 
         # Correlation between feature and target column
-        st.subheader("", anchor="target_features")
+        st.markdown("<a name='target_features'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.correlation_feature_and_target"))
         st.sidebar.markdown(f"[{t('header.correlation_feature_and_target')}](#target_features)")
 
@@ -658,7 +663,8 @@ class Application(ABC):
 
         # Prediction
 
-        st.subheader("", anchor="prediction")
+        st.markdown("<a name='prediction'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.prediction"))
         st.sidebar.markdown(f"[{t('header.prediction')}](#prediction)")
 
@@ -764,7 +770,8 @@ class Application(ABC):
         adaptation_metric = config["adaptation_metric"]
 
         # Displays metrics if the predict data contains correct answers.
-        st.subheader("", anchor="metrics")
+        st.markdown("<a name='metrics'></a>", unsafe_allow_html=True)
+        st.write("")
         style.custom_h4(t("header.metrics"))
         st.sidebar.markdown(f"[{t('header.metrics')}](#metrics)")
 
