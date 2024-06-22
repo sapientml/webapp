@@ -167,10 +167,8 @@ class Application(ABC):
         self.section_show_logo()
 
         def lang_change(lang: Literal["en", "ja"], is_tutorial: bool):
-            if lang == "en":
-                st.experimental_set_query_params(page="tutorial" if is_tutorial else "app", lang="ja")
-            else:
-                st.experimental_set_query_params(page="tutorial" if is_tutorial else "app", lang="en")
+            st.query_params["page"] = "tutorial" if is_tutorial else "app"
+            st.query_params["lang"] = "ja" if lang == "en" else "en"
 
         def format_func(option):
             return "English" if option == "en" else "日本語"
@@ -188,12 +186,8 @@ class Application(ABC):
         )
 
         def update_query_params(lang: Literal["en", "ja"], is_tutorial: bool):
-            if is_tutorial:
-                st.experimental_set_query_params(page="app", lang=lang)
-                # reset()
-            else:
-                st.experimental_set_query_params(page="tutorial", lang=lang)
-                # reset()
+            st.query_params["page"] = "app" if is_tutorial else "tutorial"
+            st.query_params["lang"] = lang
 
         if is_tutorial:
             st.sidebar.button(t("sidebar.to_trial"), on_click=update_query_params, args=(lang, True))
