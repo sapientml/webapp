@@ -77,7 +77,7 @@ class Application(ABC):
 
     def get_lang(self):
         query_params = st.query_params
-        selected_lang = query_params["lang"][0] if "lang" in query_params else "en"
+        selected_lang = query_params["lang"] if "lang" in query_params else "en"
         lang = "ja" if selected_lang == "ja" else "en"
         return lang
 
@@ -86,10 +86,10 @@ class Application(ABC):
 
         # for webapp
         if "is_tutorial" in query_params:
-            is_tutorial = True if query_params["is_tutorial"][0] == "True" else False
+            is_tutorial = True if query_params["is_tutorial"] == "True" else False
         # for sandbox
         else:
-            selected_page = query_params["page"][0] if "page" in query_params else "tutorial"
+            selected_page = query_params["page"] if "page" in query_params else "tutorial"
             is_tutorial = False if selected_page == "app" else True
 
         return is_tutorial
