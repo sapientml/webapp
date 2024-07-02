@@ -14,15 +14,13 @@
 import argparse
 import copy
 import io
-import logging
 import os
+import pickle
 import re
 import time
 from abc import ABC, abstractmethod
-from contextvars import ContextVar
 from pathlib import Path
 from typing import Literal
-from uuid import UUID
 
 import lib.style_set as style
 import numpy as np
@@ -31,16 +29,14 @@ import plotly.express as px
 import streamlit as st
 from PIL import Image
 from sapientml import SapientML
-from sapientml.util.logging import setup_logger
 from sklearn import metrics
 
 from .data_grapher import DataGrapher
 from .escape_util import escape_csv_columns
 
 # from lib.utils import UUIDContextFilter
-from .generate_code_thread import GenerateCodeThread
+from .generate_code_subprocess import SubprocessExecutor
 from .i18n import I18N_DICT, use_translation
-from .logging_filter import ModifyLogMessageFilter, UUIDContextFilter
 from .make_result_thread import MakeResultThread
 from .result_extractor import ResultExtractor
 from .session_state import CodeGenerationState, MakeResultState, PredictState, QueryParamsState, TrainDataState
@@ -282,7 +278,7 @@ class Application(ABC):
         (lang, is_tutorial) = self.get_query_params()
         t = use_translation(lang, self.I18N_DICT)
 
-        st.markdown("<a name='train_data'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='train_data'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.training_data"))
         st.sidebar.markdown(f"[{t('header.training_data')}](#train_data)")
@@ -306,87 +302,60 @@ class Application(ABC):
     def section_generate_code(self, config: dict, estimator_name: str):
         (lang, _) = self.get_query_params()
         t = use_translation(lang, self.I18N_DICT)
-        uuid = st.session_state.uuid
+
         output_dir = config["output_dir"]
+        config["output_dir"] = str(output_dir)
+
+        train_data = config["training_dataframe"]
+
+        uuid = st.session_state.uuid
 
         if "code_generation" not in st.session_state:
             st.session_state.code_generation = CodeGenerationState()
         state = st.session_state.code_generation
 
-        thread_generatecode = state.thread_generatecode
-        log_stream = state.log_stream
-        sml = state.sml
+        subproc_executor = state.subproc_executor
 
         if state.sml is None:
-            config.update({"debug": True})
-            sml = state.sml = SapientML(
-                config["target_columns"],
-                model_type=estimator_name,
-                **({k: v for k, v in config.items() if k != "target_columns"}),
-            )
 
-            if (state.log_stream is not None) and isinstance(state.log_stream, io.StringIO):
-                state.log_stream.close()
-            log_stream = state.log_stream = io.StringIO()
-            log_handler = logging.StreamHandler(log_stream)
-            # ContextVars
-            ctx_uuid: ContextVar[UUID] = ContextVar("streamlit_uuid", default=None)
-            log_handler.addFilter(UUIDContextFilter(uuid, ctx_uuid))
+            os.makedirs(output_dir, exist_ok=True)
+            train_data_path = Path(output_dir / f"{uuid}_training.csv")
+            train_data.to_csv(train_data_path, index=False)
 
-            log_handler.addFilter(ModifyLogMessageFilter(str(output_dir.resolve())))
+            if subproc_executor is None:
+                subproc_executor = state.subproc_executor = SubprocessExecutor(self.debug)
+                subproc_executor.start_automl(train_data_path, estimator_name, config)
 
-            logger = setup_logger()
-
-            logger.addHandler(log_handler)
-
-            thread_generatecode = state.thread_generatecode = GenerateCodeThread(
-                sml, config, log_handler, ctx_uuid, uuid
-            )
-            thread_generatecode.start()
-
-        if state.log_stream is None:
-            st.stop()
-
-        # Execution
-        st.markdown("<a name='execution'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='execution'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.execution"))
         st.sidebar.markdown(f"[{t('header.execution')}](#execution)")
+        log_area = st.text("")
 
-        if thread_generatecode is not None:
-            log_area = st.text("")
-            with st.spinner(t("codegen.generating_code")):
-                while thread_generatecode.is_alive():
-                    if log_stream is not None:
-                        log_area.text(re.sub(r"/tmp/.+/", "", log_stream.getvalue()))
-                    time.sleep(1)
-                if log_stream is not None:
-                    log = re.sub(r"/tmp/.+/", "", log_stream.getvalue())
-                    state.log_message = log
-                    log_area.text(log)
+        with st.spinner(t("codegen.generating_code")):
+            while subproc_executor.thread.is_alive():
+                if subproc_executor.log_text:
+                    log_area.text(re.sub(r"/tmp/.+/", "", subproc_executor.log_text))
+                time.sleep(1)
 
-            state.ex = thread_generatecode.get_exception()
-            state.sml = thread_generatecode.get_sml()
+        if not subproc_executor.thread.is_alive():
+            log = re.sub(r"/tmp/.+/", "", subproc_executor.log_text)
+            # state.log_message = log
+            log_area.text(log)
 
-            if state.ex is not None:
+        if subproc_executor.proc.poll() is not None:
+            if subproc_executor.proc.returncode != 0:
                 st.error(t("codegen.failed"))
-                import traceback
 
-                tb_str = traceback.format_exception(type(state.ex), state.ex, state.ex.__traceback__)
-                tb_str = "".join(tb_str)
-                st.error(tb_str)
-                st.stop()
+        if Path(output_dir / "sml.pkl").exists():
+            with open(Path(output_dir / "sml.pkl"), "rb") as f:
+                state.sml = pickle.load(f)
+            if not self.debug:
+                Path(output_dir / "sml.pkl").unlink(missing_ok=True)
+                Path(train_data_path).unlink(missing_ok=True)
 
-            thread_generatecode = state.thread_generatecode = None
+        return state.sml
 
-            return state.sml
-
-        elif state.sml is not None:
-            st.text(state.log_message)
-            return state.sml
-
-        else:
-            st.stop()
 
     def section_make_result(
         self,
@@ -437,7 +406,7 @@ class Application(ABC):
         t = use_translation(lang, self.I18N_DICT)
 
         # Result
-        st.markdown("<a name='automl_result'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='automl_result'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.result"))
         st.sidebar.markdown(f"[{t('header.result')}](#automl_result)")
@@ -525,7 +494,7 @@ class Application(ABC):
         )
 
         # Model Detail
-        st.markdown("<a name='model_detail'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='model_detail'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.model_details"))
         st.sidebar.markdown(f"[{t('header.model_details')}](#model_detail)")
@@ -568,7 +537,7 @@ class Application(ABC):
         calculate_PI = True if "permutation_importance.csv" in files.keys() else False
 
         # Correlation between feature and target column
-        st.markdown("<a name='target_features'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='target_features'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.correlation_feature_and_target"))
         st.sidebar.markdown(f"[{t('header.correlation_feature_and_target')}](#target_features)")
@@ -659,7 +628,7 @@ class Application(ABC):
 
         # Prediction
 
-        st.markdown("<a name='prediction'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='prediction'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.prediction"))
         st.sidebar.markdown(f"[{t('header.prediction')}](#prediction)")
@@ -766,7 +735,7 @@ class Application(ABC):
         adaptation_metric = config["adaptation_metric"]
 
         # Displays metrics if the predict data contains correct answers.
-        st.markdown("<a name='metrics'></a>", unsafe_allow_html=True)
+        st.markdown("<a name='metrics'></a><br>", unsafe_allow_html=True)
         st.write("")
         style.custom_h4(t("header.metrics"))
         st.sidebar.markdown(f"[{t('header.metrics')}](#metrics)")

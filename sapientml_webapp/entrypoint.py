@@ -16,6 +16,17 @@ import sys
 
 
 def main() -> None:
+
+    cmd1 = [sys.executable, "/app/execute.py"]
+    subprocess.Popen(
+        cmd1,
+        shell=False,
+        executable=None,
+        cwd=None,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
     cmd2 = [sys.executable, "/app/delete.py"]
     subprocess.Popen(
         cmd2,

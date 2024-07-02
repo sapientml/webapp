@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 import pandas as pd
 from sapientml import SapientML
 
-from .generate_code_thread import GenerateCodeThread
+from .generate_code_subprocess import SubprocessExecutor
 from .make_result_thread import MakeResultThread
 
 
@@ -44,7 +44,7 @@ class ConfigurationsState:
 
 @dataclass
 class CodeGenerationState:
-    thread_generatecode: GenerateCodeThread = None
+    subproc_executor: SubprocessExecutor = None
     result = None
     ex: Exception = None
     log_stream: io.StringIO = None
